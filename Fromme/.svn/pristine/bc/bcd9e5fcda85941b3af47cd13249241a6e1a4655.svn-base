@@ -1,0 +1,94 @@
+package com.fromme.app.user.dao;
+
+import java.util.HashMap;
+
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+
+import com.fromme.app.user.vo.UserVO;
+import com.fromme.mybatis.config.SqlMapConfig;
+import com.sun.org.apache.bcel.internal.generic.StackInstruction;
+import com.sun.org.apache.regexp.internal.recompile;
+
+public class UserDAO {
+	SqlSessionFactory session_f = SqlMapConfig.getSqlMapInstance();
+	SqlSession sqlsession;
+	
+	public UserDAO(){
+		sqlsession = session_f.openSession(true);
+	}
+	
+	// 아이디 중복검사
+	public boolean checkId(String id) {
+		if ((Integer)sqlsession.selectOne("User.checkId", id) == 1) {
+			return true;
+		};
+		return false;
+	}
+	
+	// 로그인
+	public String login(String id, String pw) {
+		HashMap<String, String> dataMap = new HashMap<>();
+		dataMap.put("users_id", id);
+		dataMap.put("users_pw", pw);
+		
+		return (String)sqlsession.selectOne("User.login", dataMap);
+	}
+	
+	// 회원가입
+	public boolean join(UserVO user) {
+		if (sqlsession.insert("User.join", user) == 1) {
+			return true;
+		}
+		return false;
+	}
+	
+	// id찾기
+	public String findId(String name, String phone) {
+		HashMap<String, String> dataMap = new HashMap<>();
+		dataMap.put("users_name", name);
+		dataMap.put("users_phone", phone);
+
+		return (String)sqlsession.selectOne("User.findId", dataMap);
+	}
+	// pw찾기
+	public String findPw(String id, String email) {
+		HashMap<String, String> dataMap = new HashMap<>();
+		dataMap.put("users_id", id);
+		dataMap.put("users_email", email);
+		
+		return (String)sqlsession.selectOne("User.findPw", dataMap);
+	}
+	//회원 주소 가져오기
+	public String getUserAddress(String users_id) {
+		return sqlsession.selectOne("User.getUserAddress", users_id);
+	}
+	//회원 권한 가져오기
+	public int getUsersAuthority(String users_id) {
+		return sqlsession.selectOne("User.getUsersAuthority", users_id);
+	}
+	/*//회원 정보 가져오기
+	public UserVO getUserInfo(String users_id) {
+		return sqlsession.selectOne("User.getUserInfo", users_id);
+	}*/
+	
+	// 회원 정보 가져오기
+	public UserVO getUserInfo(String users_id) {
+		return sqlsession.selectOne("User.getUserInfo", users_id);
+	}
+	// 본인 확인
+	public boolean checkIdPw(String id, String pw) {
+		HashMap<String, String> dataMap = new HashMap<>();
+		dataMap.put("users_id", id);
+		dataMap.put("users_pw", pw);
+		
+		if ((Integer)sqlsession.selectOne("User.userCheckIdPw", dataMap) == 1) {
+			return true;
+		};
+		return false;
+	}
+	
+	
+}
+
+

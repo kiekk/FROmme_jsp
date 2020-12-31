@@ -1,0 +1,26 @@
+package com.fromme.app.classes;
+
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.fromme.action.Action;
+import com.fromme.action.ActionForward;
+import com.fromme.app.classes.dao.ClassesDAO;
+
+
+public class ClassesLikeIncreaseOkAction implements Action{
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+
+		ClassesDAO c_dao = new ClassesDAO();
+		int classes_like = Integer.parseInt(request.getParameter("like"));
+		int classes_no = Integer.parseInt(request.getParameter("seq"));
+		
+		c_dao.increaseLike(classes_no, classes_like);
+
+		return null;	
+		}
+}

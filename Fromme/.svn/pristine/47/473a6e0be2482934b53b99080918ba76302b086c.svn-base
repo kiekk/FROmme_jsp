@@ -1,0 +1,7 @@
+//비동기 ajax async ES6 이상에서만 사용가능
+const callApi = async(path) => {	
+	console.log(path);
+	let res = await fetch('ajax.jsp'+path);
+	let body = await res.json();
+	return body;
+}

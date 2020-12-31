@@ -1,0 +1,33 @@
+package com.fromme.app.admin;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.fromme.action.Action;
+import com.fromme.action.ActionForward;
+import com.fromme.app.admin.dao.AdminDAO;
+
+public class AdminListDeleteOkAction implements Action{
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		
+		ActionForward forward = new ActionForward();
+		AdminDAO a_dao = new AdminDAO();
+		
+		//리스트 삭제를 통합하여 이쪽에서 분기함
+		String reqListAttr = request.getParameter("attr");
+		int reqData = Integer.parseInt(request.getParameter("reqData"));
+		
+		Map<String, String> listMap = new HashMap<>();
+		switch(reqListAttr) {
+		case "apply":
+			
+		}
+		return forward;
+	}
+}

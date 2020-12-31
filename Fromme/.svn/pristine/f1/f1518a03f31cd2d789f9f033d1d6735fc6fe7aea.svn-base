@@ -1,0 +1,35 @@
+<%@page import="com.fromme.app.admin.dao.AdminDAO"%>
+<%@page import="java.io.PrintWriter"%>
+<%@page import="com.fromme.app.admin.vo.ChartVO"%>
+<%@page import="java.util.List"%>
+<%@page import="com.google.gson.JsonObject"%>
+<%@page import="com.google.gson.JsonArray"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+	AdminDAO a_dao = new AdminDAO();
+	
+	String dateData = request.getParameter("date");
+	System.out.println("cccc"+dateData);
+	//11/10 수정완료
+	List<ChartVO> todayData = a_dao.getChartData2("hh24", dateData);
+	List<ChartVO> weekData = a_dao.getChartData2("DD", dateData);
+	List<ChartVO> monthData = a_dao.getChartData2("DD2", dateData);
+	List<ChartVO> yearData = a_dao.getChartData2("MM", dateData);
+	
+
+	JsonArray json = new JsonArray();
+	json.add(a_dao.makeChartLabel(todayData));
+	json.add(a_dao.makeChartData(todayData));
+	json.add(a_dao.makeChartLabel(weekData));
+	json.add(a_dao.makeChartData(weekData));
+	json.add(a_dao.makeChartLabel(monthData));
+	json.add(a_dao.makeChartData(monthData));
+	json.add(a_dao.makeChartLabel(yearData));
+	json.add(a_dao.makeChartData(yearData));
+
+	JsonObject result = new JsonObject();
+	result.add("item", json);
+	System.out.print(result);
+	out.print(result);
+%>

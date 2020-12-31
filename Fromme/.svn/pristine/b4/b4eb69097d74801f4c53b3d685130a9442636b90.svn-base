@@ -1,0 +1,46 @@
+package com.fromme.app.user;
+
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.fromme.action.Action;
+import com.fromme.action.ActionForward;
+import com.fromme.app.studio.dao.StudioDAO;
+import com.fromme.app.studio.vo.StudioVO;
+import com.fromme.app.user.dao.UserDAO;
+import com.fromme.app.user.vo.UserVO;
+
+public class StudioDetailJoinOkAction implements Action{
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("UTF-8");
+		
+		ActionForward forward = new ActionForward();
+		
+		StudioDAO s_dao = new StudioDAO();
+		StudioVO s_vo = new StudioVO();
+		
+		s_vo.setStudio_name(request.getParameter("studio_name"));
+		s_vo.setStudio_president(request.getParameter("studio_president"));
+		s_vo.setStudio_phone(request.getParameter("studio_phone"));
+		s_vo.setGenre_no((Integer.parseInt(request.getParameter("genre_no"))));
+		s_vo.setStudio_address(request.getParameter("studio_address"));
+		s_vo.setStudio_address2(request.getParameter("studio_address2"));
+		
+		if (!s_dao.join(s_vo)) {
+			PrintWriter out = response.getWriter();
+			response.setContentType("text/html;charset=utf-8");
+			out.println("<script>");
+			out.println("alert('회원가입 실패, 잠시 후 다시 시도해 주세요.')");
+			out.println("</script>");
+			out.close();
+			return null;
+		}
+		
+		forward.setRedirect(false);
+		forward.setPath("/user/UserLogin.use");
+		return forward;
+	}
+}

@@ -1,0 +1,135 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="ko-KR">
+  <head>
+  	<style type="text/css">
+  		#box{border:1px solid black;}
+  		#postcodify_search_button{border:1px solid black;}
+  		#body_back{background-image:url("${pageContext.request.contextPath}/app/assets/img/banner/background_body.png");}
+  		.circle{
+  			width:100px;
+  			height:100px;
+  			background:gray;
+  			border-radius:50%;
+  			margin-right:9%;
+  			text-align:center;
+  			line-height:100px;
+  			float:left;
+  		}
+  		.circle-back{
+  			width:100px;
+  			height:100px;
+  			background:gray;
+  			border-radius:50%;
+  			text-align:center;
+  			line-height:100px;
+  			float:left;
+  		}
+  		.arrow{
+			position: relative;
+		}
+		.arrow::after{
+			content:"";
+			display: block;
+			width:10px;
+			height:10px;
+			border-top:4px solid #333;
+			border-right:4px solid #333;
+			-webkit-transform: rotate(45deg);
+			transform: rotate(45deg);
+			position: absolute;
+			margin:auto;
+			right:50px;
+			top:50%;
+			margin-top:-7px;
+		}
+  	</style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원정보 / FROmme - 내 손으로 만드는 특별한 순간</title>
+	<%@ include file="../main/src_forInclude.html" %>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/app/assets/css/board-style.css">
+    
+  </head>
+  <body class="size-1140">
+    <!-- HEADER -->
+    <header role="banner" class="position-absolute">
+		<%@ include file="../main/header.jsp" %>
+	</header>
+	<!-- MAIN -->
+	  <main role="main">
+	    <!-- Main Header -->
+	    <header>
+	      <%@ include file="../main/banner.jsp" %>
+	    </header>
+	    <div class="line"> 	
+	    </div>
+    <!-- MAIN -->
+    <main role="main">
+      <!-- Content -->
+      <article>
+		<div class="section background-white" id="body_back">
+		<div style="width:60%; margin:auto; font-family: GmarketSansMedium;">
+		<div style="width:100%; height:1000px;">
+			<h1 style="color:white; text-align:center;">회　원　가　입</h1>
+			<div style="background-color:white; height:200px; margin:0 auto; margin-bottom:20px;">
+				<br><h4 style="margin-left: 5%;">가입 안내</h4>
+				<div style="width:80%; margin:auto;">
+					<div>
+						<ul>
+							<li class="circle">
+								<span style="color:white;">약관 동의</span>
+							</li>
+							<li class="circle">
+								<span style="color:white;">개인정보입력</span>
+							</li>
+							<li class="circle-back">
+								<span style="color:white;">회원가입</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div style="background-color:white; height:800px; margin:0 auto; margin-bottom:20px;">
+				<br><h4 style="margin-left: 5%;">이용약관동의</h4>
+					<div style="margin-left:5%;">
+						<section>
+							<input type="checkbox">
+							<label>서비스 이용약관</label><br>
+							<textarea readonly="" rows="10;" cols="100%;">
+							
+							</textarea>
+						</section>
+					</div>
+			</div>
+		</div>
+		</div>
+          <div class="line">
+			</div>
+		</div>
+      </article>
+    </main>
+
+  <!-- FOOTER -->
+  <footer>
+  	<%@ include file="../main/footer.jsp" %>
+  </footer>
+  <script src="member.js"></script>
+  <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
+  <script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
+  <script type="text/javascript">
+	 var naver_id_login = new naver_id_login("YOUR_CLIENT_ID", "YOUR_CALLBACK_URL");
+	 // 접근 토큰 값 출력
+	 alert(naver_id_login.oauthParams.access_token);
+	 // 네이버 사용자 프로필 조회
+	 naver_id_login.get_naver_userprofile("naverSignInCallback()");
+	 // 네이버 사용자 프로필 조회 이후 프로필 정보를 처리할 callback function
+	 function naverSignInCallback() {
+	   alert(naver_id_login.getProfileData('email'));
+	   alert(naver_id_login.getProfileData('nickname'));
+	   alert(naver_id_login.getProfileData('age'));
+	 }
+  </script>
+</body>
+</html>

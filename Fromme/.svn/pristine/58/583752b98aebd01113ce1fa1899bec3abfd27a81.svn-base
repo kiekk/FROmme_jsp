@@ -1,0 +1,49 @@
+package com.fromme.app.studio.dao;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+
+import com.fromme.app.classes.vo.ClassesVO;
+import com.fromme.app.studio.vo.StudioVO;
+import com.fromme.mybatis.config.SqlMapConfig;
+
+public class StudioDAO {
+	SqlSessionFactory sessionFactory = SqlMapConfig.getSqlMapInstance();
+	SqlSession sqlsession;
+	
+	public StudioDAO() {
+		sqlsession = sessionFactory.openSession(true);
+	}
+	//전체 클래스 개수를 가져온다
+	public String getStudioName(int studio_no) {
+		return sqlsession.selectOne("Studio.getStudioName", studio_no);
+	}
+	//검색한 값과 일치하는 공방 리스트 가져오기
+	public List<StudioVO> getFindGongBangList(int StartRow, int endRow, String word){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("startRow", StartRow);
+		map.put("endRow", endRow);
+		map.put("word", word);
+		return sqlsession.selectList("Studio.getFindGongBangList", map);
+	}
+	//검색한 값과 일치하는 공방 리스트 개수
+	public int getGongbangListCountBySearchWord(String word) {
+		return sqlsession.selectOne("Studio.getGongbangListCountBySearchWord", word);
+	}
+	//공방 번호에 맞는 클래스 데이터 전체가져오기
+	public List<ClassesVO> getClassContents(int studio_num){
+		return sqlsession.selectList("Studio.getClassContents", studio_num);
+	}
+	//새로운 클래스 생성
+	public boolean createNewClass(ClassesVO c_vo){
+		return (sqlsession.insert("Studio.createClass", c_vo) == 1) ? false : true;
+	}
+}
+
+
+
+

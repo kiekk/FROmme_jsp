@@ -1,0 +1,78 @@
+package com.fromme.app.user;
+
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.fromme.action.Action;
+import com.fromme.action.ActionForward;
+import com.fromme.app.user.dao.MessageDAO;
+import com.fromme.app.user.vo.MessageVO;
+
+public class MessageWriteOkAction implements Action{
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setContentType("text/html;charset=utf-8");
+		
+		MessageDAO m_dao = new MessageDAO();
+		MessageVO m_vo = new MessageVO();
+		
+		ActionForward forward = new ActionForward();
+		PrintWriter out = response.getWriter();
+		
+		//첨부한 파일이 업로드 될 서버 경로 설정
+		//request.getServletContext().getRealPath("/") + "\\upload"
+		
+		//MultipartRequest에 request객체를 전달하기 때문에 요청된 파라미터는 모두
+		//multi객체를 통해서 전달받아야 한다.
+		m_vo.setSend_id(request.getParameter("send_id"));
+		m_vo.setReceive_id(request.getParameter("receive_id"));
+		m_vo.setMessage_title(request.getParameter("message_title"));
+		m_vo.setMessage_content(request.getParameter("message_content"));
+		
+		//게시판의 현재 시퀀스 가져오기
+		//가져온 값 + 1이 지금 추가할 게시판의 번호이다.
+		//따라서 현재 시퀀스 + 1을 insertFiles에 전달해야 한다.
+		if(m_dao.insertMessage(m_vo)) {
+				forward.setRedirect(true);
+				forward.setPath(request.getContextPath() + "/message/MessageList.msg");
+				//forward로 응답을 하기 위해서는 PrintWriter로 어떠한 응답도 해서는 안된다.
+				//응답은 반드시 딱 한 번만 할 수 있다.
+//				out.println("<script>");
+//				out.println("alert('게시글 등록 성공');");
+//				out.println("</script>");
+//				out.close();
+				return forward;
+		}
+		
+		out.println("<script>");
+		out.println("alert('게시글 등록 실패. 다시 시도해주세요');");
+		out.println("</script>");
+		out.close();
+		
+		return null;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

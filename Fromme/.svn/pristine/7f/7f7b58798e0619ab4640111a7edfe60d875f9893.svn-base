@@ -1,0 +1,28 @@
+package com.fromme.app.studio.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+
+import com.fromme.app.studio.vo.StudioVO;
+import com.fromme.mybatis.config.SqlMapConfig;
+
+public class StudioDAO {
+	SqlSessionFactory sessionFactory = SqlMapConfig.getSqlMapInstance();
+	SqlSession sqlsession;
+	
+	public StudioDAO() {
+		sqlsession = sessionFactory.openSession(true);
+	}
+	//전체 클래스 개수를 가져온다
+	public String getStudioName(int studio_no) {
+		return sqlsession.selectOne("Studio.getStudioName", studio_no);
+	}
+	//검색한 값과 일치하는 공방 리스트 가져오기
+	public List<StudioVO> getFindGongBangList(String word){
+		return sqlsession.selectList("Studio.getFindGongBangList", word);
+	}
+}
+
+

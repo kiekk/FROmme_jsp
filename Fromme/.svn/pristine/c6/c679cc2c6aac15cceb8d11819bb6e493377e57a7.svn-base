@@ -1,0 +1,132 @@
+/**
+ * 클래스 상세페이지
+
+ */
+
+
+/* Korean initialisation for the jQuery calendar extension. */
+/* Written by DaeKwon Kang (ncrash.dk@gmail.com), Edited by Genie and Myeongjin Lee. */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.ko = {
+	closeText: "닫기",
+	prevText: "이전달",
+	nextText: "다음달",
+	currentText: "오늘",
+	monthNames: [ "1월","2월","3월","4월","5월","6월",
+	"7월","8월","9월","10월","11월","12월" ],
+	monthNamesShort: [ "1월","2월","3월","4월","5월","6월",
+	"7월","8월","9월","10월","11월","12월" ],
+	dayNames: [ "일요일","월요일","화요일","수요일","목요일","금요일","토요일" ],
+	dayNamesShort: [ "일","월","화","수","목","금","토" ],
+	dayNamesMin: [ "일","월","화","수","목","금","토" ],
+	weekHeader: "주",
+	dateFormat: "yy. m. d.",
+	firstDay: 0,
+	isRTL: false,
+	showMonthAfterYear: true,
+	yearSuffix: "년" };
+datepicker.setDefaults( datepicker.regional.ko );
+
+return datepicker.regional.ko;
+
+} ) );
+
+/**
+ * 결제 모듈 스크립트 
+ */
+//https://github.com/iamport/iamport-manual/blob/master/%EC%9D%B8%EC%A6%9D%EA%B2%B0%EC%A0%9C/README.md
+$("#kcp_payment").click(function () {
+	
+	var price = document.getElementById("classes_price").innerText;
+	var date = $("#datePicker").val();
+	var class_no = $("#classes_no").val();
+	var title = document.getElementById("classes_title").innerText;
+	
+	console.log(title);//확인용
+
+	if(date == ''){
+		alert("날짜를 선택해주세요.");
+		return false;
+	}
+	
+	IMP.init('imp29354370'); //가맹점 코드
+
+	IMP.request_pay({
+	    pg : 'kcp', 
+	    pay_method : 'card',
+	    merchant_uid : 'merchant_' + new Date().getTime(),
+	    name : title, //상품명
+	    amount : price, //판매 가격
+	    buyer_email : 'iamport@siot.do',
+	    buyer_name : '구매자이름',
+	    buyer_tel : '010-1234-5678',
+	    buyer_addr : '서울특별시 강남구 삼성동',
+	    buyer_postcode : '123-456'
+	}, function(rsp) {
+	    if ( rsp.success ) {
+	        var msg = '결제가 완료되었습니다.';
+	        msg += '고유ID : ' + rsp.imp_uid;
+	        msg += '상점 거래ID : ' + rsp.merchant_uid;
+	        msg += '결제 금액 : ' + rsp.paid_amount;
+	        msg += '카드 승인번호 : ' + rsp.apply_num;
+	    } else {
+	        var msg = '결제에 실패하였습니다.';
+	        msg += '에러내용 : ' + rsp.error_msg;
+	    }
+	    alert(msg);
+	});
+});
+
+/**
+ * 좋아요 ajax?
+ */
+function increaseLike() {
+	check = false;
+
+		$.ajax({
+			url: contextPath + "/classes/ClassesIncreaseLikeOk.me?like_num="+like,
+			type: 'get',
+			dataType: 'text',
+			success: function(data){
+				if(data.trim() == "ok"){
+					check = true;
+					$("#idCheck_text").text("사용할 수 있는 아이디입니다.");
+				}else{
+					$("#idCheck_text").text("중복된 아이디입니다.");
+				}
+			},
+			error: function(){
+				console.log("오류");
+			}
+		})
+}
+
+
+
+function checkId(id){
+	
+}
+
+/**
+ * 공유
+ */
+function share() {
+	
+}
+
+
+
+function goToCart() {
+	window.location.href = "cart.jsp"
+}

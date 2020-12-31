@@ -1,0 +1,242 @@
+package com.fromme.app.admin.dao;
+
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.json.simple.JSONObject;
+
+import com.fromme.app.admin.vo.ChartVO;
+import com.fromme.app.admin.vo.IndexViewVO;
+import com.fromme.app.board.vo.PostViewVO;
+import com.fromme.app.studio.vo.StudioVO;
+import com.fromme.mybatis.config.SqlMapConfig;
+
+public class AdminDAO {
+	SqlSessionFactory sessionFactory = SqlMapConfig.getSqlMapInstance();
+	SqlSession sqlsession;
+	
+	public AdminDAO() {
+		sqlsession = sessionFactory.openSession(true);
+	}
+	
+	//메인 페이지 총 예약 수, 한달 간 수익 구하는 쿼리 
+	public int getIndexReserve() {
+		return sqlsession.selectOne("Admin.getIndexReserve");
+	}
+	
+	public int getIndexTotalReserve() { 
+		return sqlsession.selectOne("Admin.getIndexTotalReserve");
+	}
+	
+	//조회수 데이터 가져오기
+	public Map<String, Integer> views(String classify) {
+		//classify : hh24, DD(일주일), DD2(한달) ,MM (연도별) 
+		//classify_dateFormat : YYYY-MM-DD
+		Map<String, String> datas;
+		switch (classify) {
+		case "hh24":
+			datas = new HashMap<>();
+			datas.put("classify", classify);
+			datas.put("classify_dateFormat", "YYYY-MM-DD hh");
+			datas.put("startTime", "(TO_CHAR(SYSDATE, 'YYYY-MM-DD')||' '||'00')");
+			datas.put("endTime", "(TO_CHAR(SYSDATE, 'YYYY-MM-DD')||' '||'24')");
+			break;
+		case "DD" :
+			datas = new HashMap<>();
+			datas.put("classify", classify);
+			datas.put("classify_dateFormat", "YYYY-MM");
+			datas.put("startTime", "SYSDATE - 7");
+			datas.put("endTime", "SYSDATE");
+			break;
+		case "DD2":
+			datas = new HashMap<>();
+			datas.put("classify", classify.substring(0, 2));
+			datas.put("classify_dateFormat", "YYYY-MM");
+			datas.put("startTime", "SYSDATE - 30");
+			datas.put("endTime", "SYSDATE");
+			break;
+		case "MM" :
+			datas = new HashMap<>();
+			datas.put("classify", classify);
+			datas.put("classify_dateFormat", "YYYY");
+			datas.put("startTime", "SYSDATE - 365");
+			datas.put("endTime", "SYSDATE");
+			break;
+		default:
+			datas = new HashMap<>();
+			break;
+		}
+		List<ChartVO> list = sqlsession.selectList("Admin.getViewChartData", datas);
+		Map<String, Integer> chartMap = new HashMap<>();
+		//hh24인 경우 3의 배수에 값을 누적시켜서 차트에 표현
+		if(classify.equals("hh24")) {
+			int result = 0;
+			for (ChartVO tmp : list) {
+				if(Integer.parseInt(tmp.getCriteriaDate()) % 3 == 0) {
+					result += tmp.getData();
+					chartMap.put(tmp.getCriteriaDate(), result);
+					result = 0;
+				} else {
+					result += tmp.getData();
+				}
+			}
+		} else {
+			for (ChartVO tmp : list) {
+				chartMap.put(tmp.getCriteriaDate(), tmp.getData());
+			}
+		}
+		return chartMap;
+	}
+	
+	public String getJsonArr(Map<String, Integer> map) {
+		String json = "{\"items\": [";
+		Set<String> temp = map.keySet();
+		List<String> tmp = new ArrayList<>();
+		for (String string : temp) {
+			tmp.add(string);
+		}
+		
+		for (int i = 0; i < tmp.size(); i++) {
+			json += "{\""+tmp.get(i)+":00\":"+map.get(tmp.get(i))+"},";
+		}
+		String result = json.substring(0, json.length()-1);
+		result += "]}";
+		return result;
+	}
+	
+	//페이지 방문 시 조회 수 인서트 //수정필요함
+	public void insertView(HttpServletRequest request) {
+		String ip = getUserIp(request);
+		if(ip == "0:0:0:0:0:0:0:1") ip = this.getUserIpInLinux();
+		System.out.println(ip);
+		int check = this.getSameIp(ip);
+		if(check > 0) {
+			System.out.println("증가안함");
+			return;
+		}
+		System.out.println("증가");
+		sqlsession.insert("Admin.insertViews", ip);
+	}
+	
+	//오늘 접속한 아이피 가져오기
+	public int getSameIp(String ip) {
+		return sqlsession.selectOne("Admin.getSameIp", ip);
+	}
+	
+	//메인 페이지 조회수 데이터 가져오기 정수형 3칸 배열 
+	public IndexViewVO getIndexView() {
+		return sqlsession.selectOne("Admin.getIndexView");
+	}
+	
+	//사용자 아이피 확인 
+	public String getUserIp(HttpServletRequest request) {
+        String ip = null;
+
+        ip = request.getHeader("X-Forwarded-For");
+        
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+            ip = request.getHeader("Proxy-Client-IP"); 
+        } 
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+            ip = request.getHeader("WL-Proxy-Client-IP"); 
+        } 
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+            ip = request.getHeader("HTTP_CLIENT_IP"); 
+        } 
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR"); 
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+            ip = request.getHeader("X-Real-IP"); 
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+            ip = request.getHeader("X-RealIP"); 
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+            ip = request.getHeader("REMOTE_ADDR");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+            ip = request.getRemoteAddr(); 
+        }
+		
+		return ip;
+	}
+	
+	//리눅스 서버에서 사용자 ip 확인
+	public String getUserIpInLinux() {
+		try {
+			String ip = null;
+
+			boolean isLoopBack = true;
+			Enumeration<NetworkInterface> en;  
+			en = NetworkInterface.getNetworkInterfaces();
+
+
+			while(en.hasMoreElements()) {
+				NetworkInterface ni = en.nextElement();
+				if (ni.isLoopback())
+					continue;
+
+				Enumeration<InetAddress> inetAddresses = ni.getInetAddresses();
+				while(inetAddresses.hasMoreElements()) { 
+					InetAddress ia = inetAddresses.nextElement();
+					if (ia.getHostAddress() != null && ia.getHostAddress().indexOf(".") != -1) {
+						ip = ia.getHostAddress();
+						System.out.println(ip);
+						isLoopBack = false;
+						break;
+					}
+				}
+				if (!isLoopBack)
+					break;
+			}
+			return ip;
+		} catch (SocketException e) {
+			e.printStackTrace();
+			return "0:0:0:0:0:0:0:1";
+		}
+	}
+	//2: 승인, 5: 기각
+	public int setStudioAuthority(int authority, int studio_no) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("authority", authority);
+		map.put("studio_no", studio_no);
+		return sqlsession.update("Admin.setStudioAuthority", map);
+	}
+	
+	//승인목록 가져오는 쿼리
+	public List<StudioVO> getStudioApplyList(int startRow, int endRow) {
+		Map<String, Integer> applyMap = new HashMap<>();
+		applyMap.put("startRow", startRow);
+		applyMap.put("endRow", endRow);
+		
+		List<StudioVO> applyList = sqlsession.selectList("Admin.getStudioApplyList", applyMap);
+		
+		return applyList;
+	}
+	
+	//승인 목록 갯수 가져오는 쿼리
+	public int getStudioApplyCount() {
+		return sqlsession.selectOne("Admin.getStudioApplyCount");
+	}
+	
+	public int deleteList(String table, String column_name, int reqData) {
+		return sqlsession.delete("Admin.deleteList", table);
+	}
+	
+	
+}
+
+

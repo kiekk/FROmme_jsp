@@ -1,0 +1,42 @@
+/**
+ * 
+ */
+// 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
+// 인포윈도우에 장소명을 표시합니다
+//function displayInfowindow(marker, title) {
+//    var content = '<div style="padding:5px;z-index:1;">' + title + '<br/><a href="https://map.kakao.com/link/from/출발주소셋팅,33.450701,126.570667/to/도착주소셋팅,32.450701,122.570667" style="color:blue" target="_blank">길찾기</a></div>';
+//
+//    infowindow.setContent(content);
+//    infowindow.open(map, marker);
+//}
+
+//버튼 클릭에 따라 지도 확대, 축소 기능을 막거나 풀고 싶은 경우에는 map.setZoomable 함수를 사용합니다
+function setZoomable(zoomable) {
+	$('.btn_map').removeClass('clicked');
+	$('.btn_'+zoomable).addClass('clicked');
+    // 마우스 휠로 지도 확대,축소 가능여부를 설정합니다
+    map.setZoomable(zoomable);    
+}
+//팝업창 열기
+function openPopup(){
+	var url = '../board/mapUseGuidePopup.html';
+	var width = 600;
+	var height = 600;
+	var popupX = ((window.screen.width / 2) - (width / 2));
+	var popupY= ((window.screen.height /2) - (height / 2));
+	
+	window.open(url,'_blank','width='+width+',height='+height+',left='+popupX+',top='+popupY+', screenX='+ popupX + ', screenY= '+ popupY+',scrollbars=no');
+}
+//mapUseGuidePopup.html
+function prevImg(pageNumber){
+	if(pageNumber != 1){
+		$('.page'+pageNumber).css('display','none');
+		$('.page'+(pageNumber-1)).css('display','block');
+	}
+}
+function nextImg(pageNumber){
+	if(pageNumber != 3){
+		$('.page'+pageNumber).css('display','none');
+		$('.page'+(pageNumber+1)).css('display','block');
+	}
+}

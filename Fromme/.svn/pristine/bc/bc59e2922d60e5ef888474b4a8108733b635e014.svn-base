@@ -1,0 +1,24 @@
+package com.fromme.app.admin;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.fromme.action.Action;
+import com.fromme.action.ActionForward;
+import com.fromme.app.admin.dao.AdminDAO;
+
+public class AdminUserModifyAction implements Action{
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ActionForward forward = new ActionForward();
+		AdminDAO a_dao = new AdminDAO();
+		
+		String num = request.getParameter("num");
+		String tmp = request.getParameter("reqPage");
+		
+		
+		
+		
+		return forward;
+	}
+}

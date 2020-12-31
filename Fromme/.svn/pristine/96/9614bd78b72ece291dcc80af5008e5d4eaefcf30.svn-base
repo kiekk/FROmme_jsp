@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="User">
+	<!--
+		파라미터로 받은 값에 접근할 때 #{}, ${}로 사용한다.
+		1. #{}
+			받아온 파라미터의 타입에 상관없이 String타입으로 변경된다.
+			사용자가 직접 입력한 값에 사용하는 것이 좋다(보안에 유리하다)
+		2. ${}
+			받아온 파라미터의 타입을 그대로 유지한다.
+			사용자가 직접 입력한 값을 전달받을 때에는 사용하지 않는 것이 좋다(쿼리 주입 보안에 취약하다)
+			테이블이나 컬럼명을 파라미터로 받을 때에 사용한다(#{}은 자동으로 따옴표가 붙기 때문)
+	-->
+	<!-- 회원가입 (일반유저) -->
+	<insert id="join" parameterType="UserVO">
+		INSERT INTO USERS (USERS_NO, USERS_ID, USERS_PW, USERS_NAME, USERS_PHONE, USERS_EMAIL, USERS_AUTHORITY, GENRE_NO, USERS_ADDRESS, USERS_ADDRESS_DETAIL, USERS_ZIPCODE)
+		VALUES (users_seq.nextval, #{users_id}, #{users_pw}, #{users_name}, #{users_phone}, 
+		#{users_email}, #{users_authority}, ${genre_no}, #{users_address}, #{users_address_detail}, #{users_zipcode})
+	</insert>
+
+	<!-- 회원가입 (공방주) -->
+	<insert id="studioJoin" parameterType="StudioVO">
+		INSERT INTO STUDIO
+		VALUES (studio_seq.nextval, #{studio_name}, #{studio_president}, #{genre_no}, 
+		#{studio_phone}, #{studio_address}, #{studio_address2})
+	</insert>
+	
+	<!-- 아이디 중복 검사 -->
+	<select id="checkId" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM USERS WHERE USERS_ID = #{users_id}
+	</select>
+	
+	<!-- 비밀번호 확인 -->
+	<select id="userCheckIdPw" parameterType="map" resultType="_int">
+		SELECT COUNT(*) FROM USERS 
+		WHERE USERS_ID = #{users_id} AND USERS_PW = #{users_pw}
+	</select>
+	
+	<!-- 로그인 -->
+	<select id="login" parameterType="map" resultType="string">
+		SELECT USERS_ID FROM USERS 
+		WHERE USERS_ID = #{users_id} AND USERS_PW = #{users_pw}
+	</select>
+	
+	<!-- 회원정보 가져오기 -->
+	<select id="getUserInfo" parameterType="string" resultType="UserVO">
+		SELECT * FROM USERS WHERE USERS_ID = #{uesrs_id}
+	</select>
+	
+	<!-- 회원정보 수정 -->
+	<update id="updateInfo" parameterType="map">
+		UPDATE USERS SET USERS_NAME = #{users_name}, USERS_PHONE = {users_phone}, USERS_EMAIL = #{users_email}, 
+		USERS_ZIPCODE = #{users_zipcode}, USERS_ADDRESS = #{users_address}, USERS_ADDRESS_DETAIL = {users_addres_detail}
+		WHERE USERS_ID = #{session_id}
+	</update>
+	
+	<!-- id / pw 찾기 -->
+	<select id="findId" parameterType="map" resultType="string">
+		SELECT USERS_ID FROM USERS 
+		WHERE USERS_NAME = #{users_name} AND USERS_PHONE = ${users_phone}
+	</select>
+	
+	<select id="findPw" parameterType="map" resultType="string">
+		SELECT USERS_PW FROM USERS 
+		WHERE USERS_ID = #{users_id} AND USERS_EMAIL = #{users_email}
+	</select>
+	
+	<select id="getUsersAuthority" parameterType="string" resultType="_int">
+		SELECT USERS_AUTHORITY FROM USERS WHERE USERS_ID = #{users_id}
+	</select>
+</mapper>

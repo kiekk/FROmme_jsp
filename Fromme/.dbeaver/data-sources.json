@@ -1,0 +1,57 @@
+{
+	"folders": {},
+	"connections": {
+		"oracle_thin-175445a9fc1-2dff540fa28d5231": {
+			"provider": "oracle",
+			"driver": "oracle_thin",
+			"name": "ORCL",
+			"save-password": true,
+			"show-system-objects": true,
+			"read-only": false,
+			"configuration": {
+				"host": "database-1.cgdf7ikoqy1g.ap-northeast-2.rds.amazonaws.com",
+				"port": "1521",
+				"database": "ORCL",
+				"url": "jdbc:oracle:thin:@//database-1.cgdf7ikoqy1g.ap-northeast-2.rds.amazonaws.com:1521/ORCL",
+				"home": "C:\\oraclexe\\app\\oracle\\product\\11.2.0\\server",
+				"type": "dev",
+				"provider-properties": {
+					"@dbeaver-check-schema-content@": "false",
+					"@dbeaver-always-show-dba@": "false",
+					"@dbeaver-always-use-dba-views@": "false",
+					"@dbeaver-meta-use-sys-schema@": "false",
+					"@dbeaver-meta-use-simple-constraints@": "false",
+					"@dbeaver-use-rule-hint@": "false",
+					"@dbeaver-use-meta-optimizer@": "false",
+					"@dbeaver-connection-type@": "BASIC",
+					"@dbeaver-sid-service@": "SERVICE"
+				},
+				"auth-model": "oracle_native"
+			},
+			"custom-properties": {
+				"database.meta.separate.connection": "false"
+			}
+		}
+	},
+	"virtual-models": {
+		"oracle_thin-175445a9fc1-2dff540fa28d5231": {
+			"ADMIN": {
+				"@properties": {
+					"erd.diagram.state": {
+						"serialized": "<diagram version=\"1\" name=\"ADMIN\" time=\"202011181511\"><entities><data-source id=\"oracle_thin-175445a9fc1-2dff540fa28d5231\"><entity id=\"1\" name=\"AUTHORITY\" fq-name=\"ADMIN.AUTHORITY\" order=\"0\" x=\"489\" y=\"1677\"><path name=\"ADMIN\"/></entity><entity id=\"2\" name=\"CART\" fq-name=\"ADMIN.CART\" order=\"1\" x=\"42\" y=\"500\"><path name=\"ADMIN\"/></entity><entity id=\"3\" name=\"CATEGORY\" fq-name=\"ADMIN.CATEGORY\" order=\"2\" x=\"1985\" y=\"1664\"><path name=\"ADMIN\"/></entity><entity id=\"4\" name=\"CLASSES\" fq-name=\"ADMIN.CLASSES\" order=\"3\" x=\"693\" y=\"212\"><path name=\"ADMIN\"/></entity><entity id=\"5\" name=\"CLASSES_IMAGE\" fq-name=\"ADMIN.CLASSES_IMAGE\" order=\"4\" x=\"183\" y=\"87\"><path name=\"ADMIN\"/></entity><entity id=\"6\" name=\"CLASSES_INFO\" fq-name=\"ADMIN.CLASSES_INFO\" order=\"5\" x=\"46\" y=\"241\"><path name=\"ADMIN\"/></entity><entity id=\"7\" name=\"CLASSES_STATE\" fq-name=\"ADMIN.CLASSES_STATE\" order=\"6\" x=\"683\" y=\"37\"><path name=\"ADMIN\"/></entity><entity id=\"8\" name=\"GENRE\" fq-name=\"ADMIN.GENRE\" order=\"7\" x=\"1222\" y=\"42\"><path name=\"ADMIN\"/></entity><entity id=\"9\" name=\"IMAGE\" fq-name=\"ADMIN.IMAGE\" order=\"8\" x=\"1015\" y=\"1677\"><path name=\"ADMIN\"/></entity><entity id=\"10\" name=\"LIKEIT\" fq-name=\"ADMIN.LIKEIT\" order=\"9\" x=\"39\" y=\"911\"><path name=\"ADMIN\"/></entity><entity id=\"11\" name=\"MESSAGE\" fq-name=\"ADMIN.MESSAGE\" order=\"10\" x=\"39\" y=\"1116\"><path name=\"ADMIN\"/></entity><entity id=\"12\" name=\"ORDERER_INFO\" fq-name=\"ADMIN.ORDERER_INFO\" order=\"11\" x=\"2000\" y=\"710\"><path name=\"ADMIN\"/></entity><entity id=\"13\" name=\"ORDERLIST\" fq-name=\"ADMIN.ORDERLIST\" order=\"12\" x=\"1682\" y=\"203\"><path name=\"ADMIN\"/></entity><entity id=\"14\" name=\"ORDERSTATUS\" fq-name=\"ADMIN.ORDERSTATUS\" order=\"13\" x=\"2023\" y=\"22\"><path name=\"ADMIN\"/></entity><entity id=\"15\" name=\"POST\" fq-name=\"ADMIN.POST\" order=\"14\" x=\"1085\" y=\"1354\"><path name=\"ADMIN\"/></entity><entity id=\"16\" name=\"POST_AUTHORITY\" fq-name=\"ADMIN.POST_AUTHORITY\" order=\"15\" x=\"1516\" y=\"1835\"><path name=\"ADMIN\"/></entity><entity id=\"17\" name=\"POST_IMAGE_VIEW\" fq-name=\"ADMIN.POST_IMAGE_VIEW\" order=\"16\" x=\"261\" y=\"1566\"><path name=\"ADMIN\"/></entity><entity id=\"18\" name=\"POST_VIEW\" fq-name=\"ADMIN.POST_VIEW\" order=\"17\" x=\"1985\" y=\"1821\"><path name=\"ADMIN\"/></entity><entity id=\"19\" name=\"REPLY\" fq-name=\"ADMIN.REPLY\" order=\"18\" border-width=\"3\" x=\"1530\" y=\"1355\"><path name=\"ADMIN\"/></entity><entity id=\"20\" name=\"STUDIO\" fq-name=\"ADMIN.STUDIO\" order=\"19\" x=\"1511\" y=\"938\"><path name=\"ADMIN\"/></entity><entity id=\"21\" name=\"TEST\" fq-name=\"ADMIN.TEST\" order=\"20\" x=\"20\" y=\"1691\"><path name=\"ADMIN\"/></entity><entity id=\"22\" name=\"USERLIST\" fq-name=\"ADMIN.USERLIST\" order=\"21\" x=\"1015\" y=\"1849\"><path name=\"ADMIN\"/></entity><entity id=\"23\" name=\"USERS\" fq-name=\"ADMIN.USERS\" order=\"22\" x=\"814\" y=\"871\"><path name=\"ADMIN\"/></entity><entity id=\"24\" name=\"VISIT\" fq-name=\"ADMIN.VISIT\" order=\"23\" x=\"1516\" y=\"1677\"><path name=\"ADMIN\"/></entity></data-source></entities><relations><relation name=\"FK_CART_CALSSES_NO\" fq-name=\"ADMIN.CART.FK_CART_CALSSES_NO\" type=\"fk\" pk-ref=\"4\" fk-ref=\"2\"/><relation name=\"FK_CLASSES_IMAGE_CLASSES_NO_CL\" fq-name=\"ADMIN.CLASSES_IMAGE.FK_CLASSES_IMAGE_CLASSES_NO_CL\" type=\"fk\" pk-ref=\"4\" fk-ref=\"5\"/><relation name=\"FK_CLASSES_INFO\" fq-name=\"ADMIN.CLASSES_INFO.FK_CLASSES_INFO\" type=\"fk\" pk-ref=\"4\" fk-ref=\"6\"/><relation name=\"FK_CLASSES_NO\" fq-name=\"ADMIN.LIKEIT.FK_CLASSES_NO\" type=\"fk\" pk-ref=\"4\" fk-ref=\"10\"/><relation name=\"FK_ORDERLIST_CLASSES_NO_CLASSE\" fq-name=\"ADMIN.ORDERLIST.FK_ORDERLIST_CLASSES_NO_CLASSE\" type=\"fk\" pk-ref=\"4\" fk-ref=\"13\"/><relation name=\"FK_CLASSES_INFO_NO\" fq-name=\"ADMIN.CART.FK_CLASSES_INFO_NO\" type=\"fk\" pk-ref=\"6\" fk-ref=\"2\"/><relation name=\"FK_CLASSES_STATE\" fq-name=\"ADMIN.CLASSES.FK_CLASSES_STATE\" type=\"fk\" pk-ref=\"7\" fk-ref=\"4\"/><relation name=\"FK_CLASSES_GENRE_NO_GENRE_GENR\" fq-name=\"ADMIN.CLASSES.FK_CLASSES_GENRE_NO_GENRE_GENR\" type=\"fk\" pk-ref=\"8\" fk-ref=\"4\"/><relation name=\"FK_STUDIO_GENRE_NO_GENRE_GENRE\" fq-name=\"ADMIN.STUDIO.FK_STUDIO_GENRE_NO_GENRE_GENRE\" type=\"fk\" pk-ref=\"8\" fk-ref=\"20\"/><relation name=\"FK_USERS_GENRE\" fq-name=\"ADMIN.USERS.FK_USERS_GENRE\" type=\"fk\" pk-ref=\"8\" fk-ref=\"23\"/><relation name=\"FK_ORDERLIST_ORDERER_INFO_NO\" fq-name=\"ADMIN.ORDERLIST.FK_ORDERLIST_ORDERER_INFO_NO\" type=\"fk\" pk-ref=\"12\" fk-ref=\"13\"/><relation name=\"FK_ORDERLIST_ORDERLIST_STATE_N\" fq-name=\"ADMIN.ORDERLIST.FK_ORDERLIST_ORDERLIST_STATE_N\" type=\"fk\" pk-ref=\"14\" fk-ref=\"13\"/><relation name=\"FK_STUDIO_STUDIO_NO\" fq-name=\"ADMIN.CLASSES.FK_STUDIO_STUDIO_NO\" type=\"fk\" pk-ref=\"20\" fk-ref=\"4\"/><relation name=\"FK_ORDERLIST_STUDIO_NO_STUDIO_\" fq-name=\"ADMIN.ORDERLIST.FK_ORDERLIST_STUDIO_NO_STUDIO_\" type=\"fk\" pk-ref=\"20\" fk-ref=\"13\"/><relation name=\"FK_STUDIO_NO\" fq-name=\"ADMIN.USERS.FK_STUDIO_NO\" type=\"fk\" pk-ref=\"20\" fk-ref=\"23\"/><relation name=\"FK_CART_USER_ID\" fq-name=\"ADMIN.CART.FK_CART_USER_ID\" type=\"fk\" pk-ref=\"23\" fk-ref=\"2\"/><relation name=\"FK_USERS_ID\" fq-name=\"ADMIN.LIKEIT.FK_USERS_ID\" type=\"fk\" pk-ref=\"23\" fk-ref=\"10\"/><relation name=\"FK_MESSAGE_SEND_ID\" fq-name=\"ADMIN.MESSAGE.FK_MESSAGE_SEND_ID\" type=\"fk\" pk-ref=\"23\" fk-ref=\"11\"/><relation name=\"FK_ORDERLIST_USERS_ID\" fq-name=\"ADMIN.ORDERLIST.FK_ORDERLIST_USERS_ID\" type=\"fk\" pk-ref=\"23\" fk-ref=\"13\"/></relations></diagram>"
+					}
+				}
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Development",
+			"color": "255,255,255",
+			"description": "Regular development database",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false
+		}
+	}
+}

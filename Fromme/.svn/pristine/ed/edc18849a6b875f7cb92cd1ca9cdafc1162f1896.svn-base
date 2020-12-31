@@ -1,0 +1,335 @@
+package com.fromme.app.admin.dao;
+
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+
+import com.fromme.app.admin.vo.ChartVO;
+import com.fromme.app.admin.vo.IndexViewVO;
+import com.fromme.app.studio.vo.StudioVO;
+import com.fromme.mybatis.config.SqlMapConfig;
+import com.google.gson.JsonObject;
+
+public class AdminDAO {
+	SqlSessionFactory sessionFactory = SqlMapConfig.getSqlMapInstance();
+	SqlSession sqlsession;
+	
+	public AdminDAO() {
+		sqlsession = sessionFactory.openSession(true);
+	}
+	
+	//메인 페이지 총 예약 수, 한달 간 수익 구하는 쿼리 
+	public int getIndexReserve() {
+		return sqlsession.selectOne("Admin.getIndexReserve");
+	}
+	
+	public int getIndexTotalReserve() { 
+		return sqlsession.selectOne("Admin.getIndexTotalReserve");
+	}
+	
+	//차트 데이터 가져오기
+	public List<ChartVO> getChartData(String classify, String dateData) {
+		//classify : hh24, DD(일주일), DD2(한달) ,MM (연도별) 
+		//classify_dateFormat : YYYY-MM-DD
+		Map<String, String> datas;
+		switch (classify) {
+		case "hh24":
+			datas = new HashMap<>();
+			datas.put("classify", classify);
+			datas.put("classify_dateFormat", "YYYY-MM-DD hh");
+			datas.put("startTime", "(TO_CHAR(SYSDATE, 'YYYY-MM-DD')||' '||'00')");
+			datas.put("endTime", "(TO_CHAR(SYSDATE, 'YYYY-MM-DD')||' '||'24')");
+			break;
+		case "DD" :
+			datas = new HashMap<>();
+			datas.put("classify", classify);
+			datas.put("classify_dateFormat", "YYYY-MM-DD");
+			datas.put("startTime", "TO_CHAR(SYSDATE-7, 'YYYY-MM-DD')");
+			datas.put("endTime", "TO_CHAR(SYSDATE, 'YYYY-MM-DD')");
+			break;
+		case "DD2":
+			datas = new HashMap<>();
+			datas.put("classify", classify.substring(0, 2));
+			datas.put("classify_dateFormat", "YYYY-MM-DD");
+			datas.put("startTime", "TO_CHAR(SYSDATE-30, 'YYYY-MM-DD')");
+			datas.put("endTime", "TO_CHAR(SYSDATE, 'YYYY-MM-DD')");
+			break;
+		case "MM" :
+			datas = new HashMap<>();
+			datas.put("classify", classify);
+			datas.put("classify_dateFormat", "YYYY-MM");
+			datas.put("startTime", "TO_CHAR(SYSDATE-365, 'YYYY-MM')");
+			datas.put("endTime", "TO_CHAR(SYSDATE, 'YYYY-MM')");
+			break;
+		default:
+			datas = new HashMap<>();
+			break;
+		}
+		
+		List<ChartVO> list = sqlsession.selectList("Admin.getClassChartData", datas);
+		if(list.isEmpty()) {
+			list.add(new ChartVO("x", 999));
+		}
+		return list;
+	}
+	
+	//차트 데이터 가져오기
+	public List<ChartVO> getChartData2(String classify, String dateData) {
+		//classify : hh24, DD(일주일), DD2(한달) ,MM (연도별) 
+		//classify_dateFormat : YYYY-MM-DD
+		String [] arDate = dateData.split("-");
+		String date = "";
+		for (String str : arDate) { date += str; }
+		Map<String, String> datas;
+		List<ChartVO> list;
+		switch (classify) {
+		case "hh24":
+			datas = new HashMap<>();
+			datas.put("classify", classify);
+			datas.put("row", "24");
+			datas.put("date_format", "YYYYMMDD");
+			datas.put("startTime", date);
+			datas.put("endTime", date);
+			list = sqlsession.selectList("Admin.getClassChartTodayData", datas);
+			
+			break;
+		case "DD" :
+			datas = new HashMap<>();
+			datas.put("classify", classify);
+			datas.put("classify_dateFormat", "YYYY-MM-DD");
+			datas.put("startTime", "TO_CHAR(SYSDATE-7, 'YYYY-MM-DD')");
+			datas.put("endTime", "TO_CHAR(SYSDATE, 'YYYY-MM-DD')");
+			list = sqlsession.selectList("Admin.getClassChartWeekData", datas);
+			break;
+		case "DD2":
+			//월 구하는 쿼리, 로우 갯수와 해당 월 마지막 일을 함수로 구해와야 함
+			datas = new HashMap<>();
+			int lastDay = getLastDay(arDate);
+			datas.put("classify", classify.substring(0, 2));
+			datas.put("row", lastDay+"");
+			datas.put("date_format", "YYYYMMDD");
+			datas.put("startTime", arDate[0]+arDate[1]+lastDay);
+			datas.put("endTime", arDate[0]+arDate[1]+"01");
+			list = sqlsession.selectList("Admin.getClassChartData", datas);
+			
+			break;
+		case "MM" :
+			datas = new HashMap<>();
+			datas.put("classify", classify);
+			datas.put("row", "12");
+			datas.put("date_format", "YYYY-MM");
+			datas.put("startTime", arDate[0]+"12");
+			datas.put("endTime", arDate[0]+"01");
+			list = sqlsession.selectList("Admin.getClassChartData", datas);
+			
+			break;
+		default:
+			datas = new HashMap<>();
+			list = new ArrayList<>();
+			break;
+		}
+		
+		if(list.isEmpty()) {
+			list.add(new ChartVO("x", 999));
+		}
+		return list;
+	}
+	
+	public int getLastDay(String [] date) {
+		Calendar cal = Calendar.getInstance();
+		cal.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]));
+		int lastDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH)-1;
+		return lastDay;
+	}
+
+
+	
+	public String getJsonArr(Map<String, Integer> map) {
+		String json = "{\"items\": [";
+		String result = "";
+		if(!map.isEmpty()) {
+			Set<String> temp = map.keySet();
+			List<String> tmp = new ArrayList<>();
+			for (String string : temp) {
+				tmp.add(string);
+			}
+			for (int i = 0; i < tmp.size(); i++) {
+				json += "{\""+tmp.get(i)+":00\":"+map.get(tmp.get(i))+"},";
+			}
+			result = json.substring(0, json.length()-1);			
+		}else {
+			result += "\"0\":0";
+		}
+		result += "]}";
+		return result;
+	}
+	
+	
+	
+	public JsonObject makeChartLabel(List<ChartVO> data) {
+		JsonObject json = new JsonObject();
+		for (int i = 0; i < data.size(); i++) {
+			if(data.get(i).getCriteriaDate() == null) break;
+			json.addProperty("data"+(i+1), data.get(i).getCriteriaDate());
+		}
+		return json;
+	}
+	
+	public JsonObject makeChartData(List<ChartVO> data) {
+		JsonObject json = new JsonObject();
+		for (int i = 0; i < data.size(); i++) {
+			System.out.print(data.get(i).getDateData());
+			json.addProperty("data"+(i+1), data.get(i).getDateData());
+		}
+		System.out.println("");
+		return json;
+	}
+	
+	//페이지 방문 시 조회 수 인서트 //수정필요함
+	public void insertView(HttpServletRequest request) {
+		String ip = getUserIp(request);
+		if(ip == "0:0:0:0:0:0:0:1") ip = this.getUserIpInLinux();
+		System.out.println(ip);
+		int check = this.getSameIp(ip);
+		if(check > 0) {
+			System.out.println("증가안함");
+			return;
+		}
+		System.out.println("증가");
+		sqlsession.insert("Admin.insertViews", ip);
+	}
+	
+	//오늘 접속한 아이피 가져오기
+	public int getSameIp(String ip) {
+		return sqlsession.selectOne("Admin.getSameIp", ip);
+	}
+	
+	//메인 페이지 조회수 데이터 가져오기 정수형 3칸 배열 
+	public IndexViewVO getIndexView() {
+		return sqlsession.selectOne("Admin.getIndexView");
+	}
+	
+	//사용자 아이피 확인 
+	public String getUserIp(HttpServletRequest request) {
+        String ip = null;
+
+        ip = request.getHeader("X-Forwarded-For");
+        
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+            ip = request.getHeader("Proxy-Client-IP"); 
+        } 
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+            ip = request.getHeader("WL-Proxy-Client-IP"); 
+        } 
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+            ip = request.getHeader("HTTP_CLIENT_IP"); 
+        } 
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR"); 
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+            ip = request.getHeader("X-Real-IP"); 
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+            ip = request.getHeader("X-RealIP"); 
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+            ip = request.getHeader("REMOTE_ADDR");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+            ip = request.getRemoteAddr(); 
+        }
+		
+		return ip;
+	}
+	
+	//리눅스 서버에서 사용자 ip 확인
+	public String getUserIpInLinux() {
+		try {
+			String ip = null;
+
+			boolean isLoopBack = true;
+			Enumeration<NetworkInterface> en;  
+			en = NetworkInterface.getNetworkInterfaces();
+
+
+			while(en.hasMoreElements()) {
+				NetworkInterface ni = en.nextElement();
+				if (ni.isLoopback())
+					continue;
+
+				Enumeration<InetAddress> inetAddresses = ni.getInetAddresses();
+				while(inetAddresses.hasMoreElements()) { 
+					InetAddress ia = inetAddresses.nextElement();
+					if (ia.getHostAddress() != null && ia.getHostAddress().indexOf(".") != -1) {
+						ip = ia.getHostAddress();
+						System.out.println(ip);
+						isLoopBack = false;
+						break;
+					}
+				}
+				if (!isLoopBack)
+					break;
+			}
+			return ip;
+		} catch (SocketException e) {
+			e.printStackTrace();
+			return "0:0:0:0:0:0:0:1";
+		}
+	}
+	//2: 승인, 5: 기각
+	public int setStudioAuthority(int authority, int studio_no) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("authority", authority);
+		map.put("studio_no", studio_no);
+		return sqlsession.update("Admin.setStudioAuthority", map);
+	}
+	
+	//승인목록 가져오는 쿼리
+	public List<StudioVO> getStudioApplyList(int startRow, int endRow) {
+		Map<String, Integer> applyMap = new HashMap<>();
+		applyMap.put("startRow", startRow);
+		applyMap.put("endRow", endRow);
+		
+		List<StudioVO> applyList = sqlsession.selectList("Admin.getStudioApplyList", applyMap);
+		
+		return applyList;
+	}
+	
+	//승인 목록 갯수 가져오는 쿼리
+	public int getStudioApplyCount() {
+		return sqlsession.selectOne("Admin.getStudioApplyCount");
+	}
+	
+	public int deleteList(String table, String column_name, String reqData) {
+		Map<String, String> datas = new HashMap<>();
+		datas.put("table", table);
+		datas.put("column_name", column_name);
+		datas.put("num", reqData);
+		return sqlsession.delete("Admin.deleteList", table);
+	}
+	
+	public int setPrivate(int post_no, int pub) {
+		Map<String, Integer> datas = new HashMap<String, Integer>();
+		datas.put("post_no", post_no);
+		datas.put("post_pub", pub);
+		return sqlsession.update("Admin.setPrivate", datas);
+	}
+	
+	
+}
+
+

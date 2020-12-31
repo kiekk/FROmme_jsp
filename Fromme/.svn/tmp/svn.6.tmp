@@ -1,0 +1,41 @@
+package com.fromme.app.studio.dao;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.json.simple.JSONObject;
+
+import com.fromme.app.studio.vo.StudioVO;
+import com.fromme.mybatis.config.SqlMapConfig;
+
+public class StudioDAO {
+	SqlSessionFactory sessionFactory = SqlMapConfig.getSqlMapInstance();
+	SqlSession sqlsession;
+	
+	public StudioDAO() {
+		sqlsession = sessionFactory.openSession(true);
+	}
+	//전체 클래스 개수를 가져온다
+	public String getStudioName(int studio_no) {
+		return sqlsession.selectOne("Studio.getStudioName", studio_no);
+	}
+	//검색한 값과 일치하는 공방 리스트 가져오기
+	public List<StudioVO> getFindGongBangList(int StartRow, int endRow, String word){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("startRow", StartRow);
+		map.put("endRow", endRow);
+		map.put("word", word);
+		return sqlsession.selectList("Studio.getFindGongBangList", map);
+	}
+	//검색한 값과 일치하는 공방 리스트 개수
+	public int getGongbangListCountBySearchWord(String word) {
+		return sqlsession.selectOne("Studio.getGongbangListCountBySearchWord", word);
+	}
+}
+
+

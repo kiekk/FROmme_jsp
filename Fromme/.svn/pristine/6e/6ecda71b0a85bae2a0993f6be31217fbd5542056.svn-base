@@ -1,0 +1,26 @@
+package com.fromme.app.classes;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.fromme.action.Action;
+import com.fromme.action.ActionForward;
+import com.fromme.app.classes.dao.ClassesDAO;
+import com.fromme.app.classes.vo.CartVO;
+
+
+public class CartModifyOkAction implements Action{
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+
+		ClassesDAO c_dao = new ClassesDAO();
+		
+		int cart_no = Integer.parseInt(request.getParameter("cart_no"));
+		int cart_quantity = Integer.parseInt(request.getParameter("quantity"));
+		
+		c_dao.chageQuantity(cart_no, cart_quantity);
+		return null;	
+		}
+}

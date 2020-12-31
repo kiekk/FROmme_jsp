@@ -1,0 +1,131 @@
+
+function todayChart1() {
+  let tmp = new XMLHttpRequest();
+  tmp.open('GET', `ajax.jsp?classify=${"hh24"}`);
+  tmp.send();
+  tmp.onreadystatechange = (e) => {
+    let req = e.target;
+    if(req.readyState == XMLHttpRequest.DONE) {
+      if(req.status === 200) {
+        console.log(req.response);
+        console.log(JSON.parse(req.responseText));
+      }
+    }
+  }
+
+  var ctx = document.getElementById("myChart");
+  var todayChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: ["03:00", "06:00", "09:00", "12:00", "15:00", "18:00", "21:00", "24:00"],
+      datasets: [
+        {
+          label: "예약 수",
+          data: [12, 19, 3, 5, 2, 3, 20],
+          fill: false,
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+          ],
+          borderColor: [
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+            "rgba(255, 159, 64, 1)",
+            "rgba(255, 159, 64, 1)",
+          ],
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+            },
+          },
+        ],
+      },
+    },
+  });
+}
+
+function weekChart() {
+  var ctx = document.getElementById("myChart");
+  var todayChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+      datasets: [
+        {
+          label: "예약 수",
+          data: [19, 14, 23, 2, 7, 16, 2],
+          fill: false,
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+          ],
+          borderColor: [
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+            "rgba(255, 159, 64, 1)",
+            "rgba(255, 159, 64, 1)",
+          ],
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+            },
+          },
+        ],
+      },
+    },
+  });
+}
+
+
+function onClick(obj) {
+	console.log(obj.id);
+	switch (obj.id) {
+		case 'today':
+			todayChart1();
+			break;
+		case 'week':
+			weekChart();
+			break;
+		default:
+			break;
+	}
+}
+
+
+
+window.onload = () => {
+	todayChart1();
+}
+

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Classes">
+
+	<select id="listAll" parameterType="map" resultType="ClassesVO">
+		SELECT * FROM
+			(SELECT ROWNUM R, D.* FROM
+				(SELECT * FROM CLASSES ORDER BY CLASSES_NO DESC) D) G
+					WHERE G.R BETWEEN ${startRow} AND ${endRow}
+	</select>
+	
+	<select id="listCount" parameterType="_int" resultType="_int">
+		SELECT COUNT(*) FROM CLASSES
+	</select>
+	
+	<select id="getCurrentSeq" resultType="_int">
+		SELECT CLASSES_SEQ.CURRVAL FROM DUAL
+	</select>
+	
+	<select id="getGenreName" parameterType="_int" resultType="string">
+		SELECT GENRE_NAME FROM GENRE WHERE GENRE_NO = ${genre_no}
+	</select>
+	
+	<select id="getDetail" parameterType="_int" resultType="ClassesVO">
+		SELECT * FROM CLASSES WHERE CLASSES_NO = ${classes_no}
+	</select>
+	
+	
+	<select id="listGenre" parameterType="map" resultType="ClassesVO">
+		SELECT * FROM
+			(SELECT ROWNUM R, D.* FROM
+				(SELECT * FROM CLASSES WHERE GENRE_NO = ${genre_no} ORDER BY GENRE_NO DESC) D) G
+					WHERE G.R BETWEEN ${startRow} AND ${endRow}
+	</select>
+	
+	<select id="listCountWithGenre" parameterType="_int" resultType="_int">
+		SELECT COUNT(*) FROM CLASSES WHERE GENRE_NO = ${genre_no}
+	</select>
+	
+
+	
+
+	
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

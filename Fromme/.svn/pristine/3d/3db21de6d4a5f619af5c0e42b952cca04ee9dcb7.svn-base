@@ -1,0 +1,27 @@
+package com.fromme.app.board;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.fromme.action.Action;
+import com.fromme.action.ActionForward;
+import com.fromme.app.board.dao.BoardDAO;
+
+public class BoardReplyDeleteOkAction implements Action {
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		ActionForward forward = new ActionForward();
+		BoardDAO b_dao = new BoardDAO();
+		
+		int replys_no = Integer.parseInt(request.getParameter("replys_no"));
+		int post_no = Integer.parseInt(request.getParameter("seq"));
+		int category_no = Integer.parseInt(request.getParameter("cat"));
+		
+		b_dao.deleteBoardReply(replys_no);
+		
+		forward.setRedirect(true);
+		forward.setPath(request.getContextPath() + "/board/BoardView.bo?seq="+post_no+"&cat="+category_no);
+		return forward;
+	}
+}

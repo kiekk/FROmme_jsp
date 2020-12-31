@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Cart">
+	<!-- 장바구니에 아이템 추가 -->
+	<insert id="insertItem" parameterType="CartVO">
+		INSERT INTO CART 
+			VALUES(cart_SEQ.NEXTVAL, SYSDATE, #{cart_quantity}, 
+				#{choice_start_date}, #{choice_end_date}, ${classes_no}, #{users_id})
+	</insert>
+	
+	<!-- 장바구니에 같은 옵션의 아이템이 존재하는지 확인 -->
+	<select id="countCart" parameterType="CartVO" resultType="_int">
+		SELECT COUNT(*) FROM CART WHERE CLASSES_NO = ${classes_no} AND USERS_ID =#{users_id} AND CHOICE_START_DATE = #{choice_start_date}	
+	</select>
+	
+	<!-- 같은 아이템이 존재하는 경우 장바구니에 수량 추가 -->
+	<update id="updateQuantity" parameterType="CartVO">
+			UPDATE CART SET 
+				CART_QUANTITY = (SELECT CART_QUANTITY FROM CART 
+					WHERE CLASSES_NO = ${classes_no} 
+					AND USERS_ID = #{users_id} 
+					AND CHOICE_START_DATE = #{choice_start_date}
+					)+1 
+						WHERE CLASSES_NO = ${classes_no} AND USERS_ID =#{users_id} AND CHOICE_START_DATE = #{choice_start_date}		
+	</update>
+	
+	<!-- 장바구니 리스트 출력 -->
+	<select id="listCart" parameterType="string" resultType="CartListVO">
+	SELECT
+         ct.USERS_ID AS users_id, 
+         c.CLASSES_NAME AS classes_name,
+         ct.CHOICE_START_DATE AS choice_start_date,
+         ct.CHOICE_END_DATE AS choice_end_date,
+         ct.CART_NO AS cart_no,
+         ct.CART_QUANTITY AS cart_quantity,
+         c.CLASSES_PRICE AS classes_price,
+        (c.CLASSES_PRICE * ct.CART_QUANTITY) as cart_sum_price
+        FROM
+            CLASSES c, CART ct 
+        WHERE c.CLASSES_NO = ct.CLASSES_NO 
+            AND ct.users_id = #{users_id}
+        ORDER BY
+            c.CLASSES_NAME DESC
+	</select>
+
+	<!-- 장바구니 아이템 삭제 -->
+	<delete id="deleteItem" parameterType="_int" >
+		DELETE FROM CART WHERE CART_NO =${cart_no}
+	</delete>
+		<!-- 장바구니 아이템 수량 변경 -->
+	<update id="chageQuantity" parameterType="map">
+		UPDATE CART SET 
+				CART_QUANTITY = ${cart_quantity} 
+						WHERE cart_no = ${cart_no}
+	</update>
+
+</mapper>

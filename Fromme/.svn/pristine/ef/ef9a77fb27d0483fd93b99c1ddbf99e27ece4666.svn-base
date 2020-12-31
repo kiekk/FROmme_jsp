@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="User">
+	<!--
+		파라미터로 받은 값에 접근할 때 #{}, ${}로 사용한다.
+		1. #{}
+			받아온 파라미터의 타입에 상관없이 String타입으로 변경된다.
+			사용자가 직접 입력한 값에 사용하는 것이 좋다(보안에 유리하다)
+		2. ${}
+			받아온 파라미터의 타입을 그대로 유지한다.
+			사용자가 직접 입력한 값을 전달받을 때에는 사용하지 않는 것이 좋다(쿼리 주입 보안에 취약하다)
+			테이블이나 컬럼명을 파라미터로 받을 때에 사용한다(#{}은 자동으로 따옴표가 붙기 때문)
+	-->
+	<select id="getInfo" parameterType="string" resultType="UserVO">
+		SELECT * FROM USERS WHERE USERS_ID =#{users_id} 
+	</select>
+	
+	<select id="getUserAddress" parameterType="string" resultType="string">
+		SELECT USERS_ADDRESS FROM USERS WHERE USERS_ID = #{users_id}
+	</select>
+	
+	<select id="getUsersAuthority" parameterType="string" resultType="_int">
+		SELECT USERS_AUTHORITY FROM USERS WHERE USERS_ID = #{users_id}
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

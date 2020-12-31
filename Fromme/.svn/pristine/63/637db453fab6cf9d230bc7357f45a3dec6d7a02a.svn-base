@@ -1,0 +1,20 @@
+package com.fromme.app.classes;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.fromme.action.Action;
+import com.fromme.action.ActionForward;
+import com.fromme.app.classes.dao.ClassesDAO;
+
+public class CartDeleteOkAction implements Action{
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		ClassesDAO c_dao = new ClassesDAO();
+		int cart_no = Integer.parseInt(request.getParameter("cart_no"));
+		
+		c_dao.deleteCartItem(cart_no);
+		return null;
+	}
+}

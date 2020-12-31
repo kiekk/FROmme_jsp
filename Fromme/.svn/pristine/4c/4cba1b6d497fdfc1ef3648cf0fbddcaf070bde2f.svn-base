@@ -1,0 +1,65 @@
+package com.fromme.app.studio;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.fromme.action.Action;
+import com.fromme.action.ActionForward;
+import com.fromme.app.studio.dao.StudioDAO;
+import com.fromme.app.studio.vo.StudioVO;
+
+public class StudioViewAction implements Action {
+
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		
+		ActionForward forward = new ActionForward();
+		
+		//int classes_no = Integer.parseInt(request.getParameter("seq"));
+		//String studio_name = request.getParameter("stu");
+		//String genre_name = request.getParameter("gen");
+		System.out.println("studioViewAction 실행");
+		
+		List<StudioVO> studioList = new ArrayList<StudioVO>();
+		StudioVO s_vo = new StudioVO();
+		StudioDAO s_dao = new StudioDAO();
+		
+		s_vo.setStudio_name("바바스튜디오");
+		s_vo.setStudio_president("한동석");
+		s_vo.setStudio_phone("01012341234");
+		
+		studioList.add(s_vo);
+		
+		request.setAttribute("studioList", studioList);
+		request.setAttribute("s_vo", s_vo);
+		
+		//s_vo = s_dao.getStudioName(classes_no);
+		
+		//start date
+		// end date 
+		// result date
+		//s_vo.setStudio_name("테스트");
+		//s_vo.setStudio_president("한동석");
+		//request.setAttribute("studio", s_vo);
+		
+		
+		//request.setAttribute("studio_name", s_vo);
+		//request.setAttribute("test1", "test1");
+		//request.setAttribute(); startdate
+		//request.setAttribute(); end date
+		//request.setAttribute(); result date
+		//request.setAttribute(); class day
+		
+		forward.setRedirect(false);
+		forward.setPath("/app/studio/studio.jsp");
+	
+		return forward;
+	}
+}
+
+

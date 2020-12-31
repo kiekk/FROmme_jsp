@@ -1,0 +1,218 @@
+function todayViewChart() {
+    var ctx = document.getElementById("todayViewChart");
+    var todayChart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: ["03:00", "06:00", "09:00", "12:00", "15:00", "18:00", "21:00", "24:00"],
+        datasets: [
+          {
+            label: "방문 수",
+            data: [90, 120, 190, 430, 750, 628, 334, 320],
+            fill: false,
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.2)",
+              "rgba(54, 162, 235, 0.2)",
+              "rgba(255, 206, 86, 0.2)",
+              "rgba(75, 192, 192, 0.2)",
+              "rgba(153, 102, 255, 0.2)",
+              "rgba(255, 159, 64, 0.2)",
+              "rgba(255, 159, 64, 0.2)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)",
+              "rgba(255, 159, 64, 1)",
+            ],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
+    });
+  }
+
+let data = [1,2,3,4,5,6];
+  function weekViewChart() {
+    var ctx = document.getElementById("weekViewChart");
+    var todayChart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+        datasets: [
+          {
+            label: "예약 수",
+            data: data,
+            fill: false,
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.2)",
+              "rgba(54, 162, 235, 0.2)",
+              "rgba(255, 206, 86, 0.2)",
+              "rgba(75, 192, 192, 0.2)",
+              "rgba(153, 102, 255, 0.2)",
+              "rgba(255, 159, 64, 0.2)",
+              "rgba(255, 159, 64, 0.2)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)",
+              "rgba(255, 159, 64, 1)",
+            ],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
+    });
+  }
+  
+  function monthLabel() {
+	  result = [];
+	  for(let i=1; i<=28; i++) {
+		  result.push(i)
+	  }
+	  return result;
+  }
+  
+  function monthViewChart() {
+	    var ctx = document.getElementById("monthViewChart");
+	    var todayChart = new Chart(ctx, {
+	      type: "line",
+	      data: {
+	        labels: monthLabel()/**["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"]*/,
+	        datasets: [
+	          {
+	            label: "예약 수",
+	            data: data,
+	            fill: false,
+	            backgroundColor: [
+	              "rgba(255, 99, 132, 0.2)",
+	              "rgba(54, 162, 235, 0.2)",
+	              "rgba(255, 206, 86, 0.2)",
+	              "rgba(75, 192, 192, 0.2)",
+	              "rgba(153, 102, 255, 0.2)",
+	              "rgba(255, 159, 64, 0.2)",
+	              "rgba(255, 159, 64, 0.2)",
+	            ],
+	            borderColor: [
+	              "rgba(255, 99, 132, 1)",
+	              "rgba(54, 162, 235, 1)",
+	              "rgba(255, 206, 86, 1)",
+	              "rgba(75, 192, 192, 1)",
+	              "rgba(153, 102, 255, 1)",
+	              "rgba(255, 159, 64, 1)",
+	              "rgba(255, 159, 64, 1)",
+	            ],
+	            borderWidth: 1,
+	          },
+	        ],
+	      },
+	      options: {
+	        responsive: true,
+	        scales: {
+	          yAxes: [
+	            {
+	              ticks: {
+	                beginAtZero: true,
+	              },
+	            },
+	          ],
+	        },
+	      },
+	    });
+	  }
+  
+  function yearLabel() {
+	  result = [];
+	  for(let i=1; i<=12; i++) {
+		  result.push(i)
+	  }
+	  return result;
+  }
+  
+  function yearViewChart() {
+	    var ctx = document.getElementById("yearViewChart");
+	    var todayChart = new Chart(ctx, {
+	      type: "line",
+	      data: {
+	        labels: yearLabel(),
+	        datasets: [
+	          {
+	            label: "예약 수",
+	            data: data,
+	            fill: false,
+	            backgroundColor: [
+	              "rgba(255, 99, 132, 0.2)",
+	              "rgba(54, 162, 235, 0.2)",
+	              "rgba(255, 206, 86, 0.2)",
+	              "rgba(75, 192, 192, 0.2)",
+	              "rgba(153, 102, 255, 0.2)",
+	              "rgba(255, 159, 64, 0.2)",
+	              "rgba(255, 159, 64, 0.2)",
+	            ],
+	            borderColor: [
+	              "rgba(255, 99, 132, 1)",
+	              "rgba(54, 162, 235, 1)",
+	              "rgba(255, 206, 86, 1)",
+	              "rgba(75, 192, 192, 1)",
+	              "rgba(153, 102, 255, 1)",
+	              "rgba(255, 159, 64, 1)",
+	              "rgba(255, 159, 64, 1)",
+	            ],
+	            borderWidth: 1,
+	          },
+	        ],
+	      },
+	      options: {
+	        responsive: true,
+	        scales: {
+	          yAxes: [
+	            {
+	              ticks: {
+	                beginAtZero: true,
+	              },
+	            },
+	          ],
+	        },
+	      },
+	    });
+	  }
+
+
+  window.onload = () => {
+    //차트 데이터는 ajax로 받아온다 
+  	
+      todayViewChart();
+      weekViewChart();
+      monthViewChart();
+      yearViewChart();
+  }

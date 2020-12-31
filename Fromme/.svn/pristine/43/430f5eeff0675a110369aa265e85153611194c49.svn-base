@@ -1,0 +1,95 @@
+package com.fromme.app.studio;
+
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.fromme.action.Action;
+import com.fromme.action.ActionForward;
+import com.fromme.app.classes.dao.ClassesDAO;
+import com.fromme.app.classes.vo.ClassesVO;
+import com.fromme.app.studio.dao.StudioDAO;
+import com.fromme.app.studio.vo.StudioVO;
+
+public class StudioAddClassOkAction implements Action{
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		System.out.println("studioAddClassOkAction실행");
+		ActionForward forward = new ActionForward();
+		ClassesDAO c_dao = new ClassesDAO();
+		ClassesVO c_vo = new ClassesVO();
+		PrintWriter out = response.getWriter();
+		
+		StudioDAO s_dao = new StudioDAO();
+		StudioVO s_vo = new StudioVO();
+		System.out.println("StudioAddClass 데이터");
+		int class_price = -1;
+		//입력한 데이터
+		String class_name = request.getParameter("class_name");
+		System.out.println("class_name : "+class_name);
+		String class_teacher = request.getParameter("class_teacher");
+		System.out.println("class_teacher : "+class_teacher);
+		String class_price_str = request.getParameter("class_price");
+		System.out.println("class_price : "+class_price);
+		String class_start_date = request.getParameter("class_start_date");
+		System.out.println("class_start_date : "+class_start_date);
+		String class_finish_date = request.getParameter("class_finish_date");
+		System.out.println("class_finish_date : "+class_finish_date);
+		String class_date = request.getParameter("class_date");
+		System.out.println("class_date : "+class_date);
+		String class_content = request.getParameter("class_content");
+		System.out.println("class_content : "+class_content);
+		
+		class_price = Integer.parseInt(class_price_str);
+		
+		//세션 아이디
+		String session_id = request.getParameter("session_id");
+		System.out.println("session 아이디 : "+session_id);
+		
+		//해당 공방 번호 가져오기
+		int studio_num = s_dao.getStudioNum(session_id);
+		
+	
+		// 클래스 타입으로 받아온 데이터 생성
+		c_vo.setClasses_name(class_name);
+		c_vo.setClasses_teacher(class_teacher);
+		c_vo.setClasses_price(class_price);
+		c_vo.setClasses_start(class_start_date);
+		c_vo.setClasses_end(class_finish_date);
+		c_vo.setClasses_registerdate(class_date);
+		c_vo.setClasses_content(class_content);
+		c_vo.setStudio_no(studio_num);
+		c_vo.setGenre_no(1);
+		c_vo.setClasses_state(1);
+		
+		//빈칸있을때
+		if(class_name==null || class_teacher==null || class_price < 0 || class_start_date==null || class_finish_date ==null || class_content ==null) {
+			System.out.println("빈칸있음");
+			out.println("<script>");
+			out.println("alert('빈칸없이 입력해주세요.');");
+			out.println("</script>");
+		}
+		
+		
+		
+		
+		//새로운 클래스 만들기
+		if(s_dao.createNewClass(c_vo)) {
+			forward.setRedirect(false);
+			forward.setPath("/studio/StudioViewAction.std");
+		
+			return forward;
+		}
+		
+		out.println("<script>");
+		out.println("alert('게시글 등록 실패. 다시 시도해 주세요.');");
+		out.println("</script>");
+		out.close();
+	
+		return null;
+	}
+
+}

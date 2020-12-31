@@ -1,0 +1,46 @@
+package com.fromme.app.admin;
+
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.fromme.action.Action;
+import com.fromme.action.ActionForward;
+import com.fromme.app.admin.dao.AdminDAO;
+import com.fromme.app.admin.vo.ChartVO;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+public class AdminChartTransferAction implements Action{
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		System.out.println("ssssssssssssssss");
+		AdminDAO a_dao = new AdminDAO();
+		PrintWriter out = response.getWriter();
+		
+//		List<ChartVO> todayData = a_dao.getChartData("hh24");
+//		List<ChartVO> weekData = a_dao.getChartData("DD");
+//		List<ChartVO> monthData = a_dao.getChartData("DD2");
+//		List<ChartVO> yearData = a_dao.getChartData("YYYY");
+		
+		JsonArray json = new JsonArray();
+//		json.add(a_dao.makeChartLabel(weekData));
+//		json.add(a_dao.makeChartData(weekData));
+		
+		JsonObject result = new JsonObject();
+		
+		result.add("item", json);
+		
+//		out.print(result);
+		String s = "asdasd";
+		System.out.println(s);
+		out.print(s);
+		
+		return null;
+	}
+}

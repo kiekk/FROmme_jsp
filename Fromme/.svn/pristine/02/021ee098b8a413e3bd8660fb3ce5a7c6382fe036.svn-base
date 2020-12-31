@@ -1,0 +1,71 @@
+package com.fromme.app.board;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.fromme.action.Action;
+import com.fromme.action.ActionForward;
+import com.fromme.app.board.dao.BoardDAO;
+import com.fromme.app.board.vo.PostVO;
+import com.fromme.app.board.vo.ReplyVO;
+import com.fromme.app.files.FilesDAO;
+import com.fromme.app.files.FilesVO;
+
+public class BoardViewByUserAction implements Action {
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("UTF-8");
+		
+		ActionForward forward = new ActionForward();
+		BoardDAO b_dao = new BoardDAO();
+		PostVO p_vo = new PostVO();
+		FilesDAO f_dao = new FilesDAO();
+		
+		int post_no = Integer.parseInt(request.getParameter("seq"));
+		String users_id = request.getParameter("users_id");
+		String filter = request.getParameter("filter");
+		Map<String, Object> post = new HashMap<>();
+		
+		post.put("post_no", post_no);
+		post.put("users_id", users_id);
+		post.put("filter", filter);
+		
+		//다음 게시글 가져오기
+		PostVO nextBoard = b_dao.getNextBoardByUser(post, filter);
+		//이전 게시글 가져오기
+		PostVO prevBoard = b_dao.getPrevBoardByUser(post, filter);
+		
+		//조회수 증가
+		b_dao.updateReadCount(post_no);
+		//게시글 가져오기
+		p_vo = b_dao.getDetail(post_no);
+		
+		request.setAttribute("nextBoard", nextBoard);
+		request.setAttribute("prevBoard", prevBoard);
+		
+		List<FilesVO> filesList = f_dao.getDetail(post_no);
+		List<ReplyVO> replyBeanList = b_dao.getReplyList(post_no);
+		if(p_vo != null) {
+			request.setAttribute("boardBean", p_vo);	
+			request.setAttribute("replyBeanList", replyBeanList);
+			if(filesList != null) {
+				request.setAttribute("filesBeanList", filesList);
+				
+				//현재 로그인된 id와 게시글의 id가 일치하지 않을 경우에만 조회수를 증가시킵니다.
+				//if(!p_vo.getUsers_id().equals(request.getSession().getAttribute("session_id"))) {
+					
+				//}
+				
+				forward = new ActionForward();
+				forward.setRedirect(false);
+				forward.setPath("/app/board/boardViewByUser.jsp");		
+			}
+		}
+		
+		return forward;
+	}
+}

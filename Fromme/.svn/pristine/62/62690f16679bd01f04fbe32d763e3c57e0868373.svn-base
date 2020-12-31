@@ -1,0 +1,115 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+<!doctype html>
+<html class="no-js" lang="kr">
+
+<head>
+    <c:import url="./header.jsp"></c:import>
+</head>
+
+<body>
+    <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+	<c:import url="./menuBar.jsp"></c:import>
+	<c:set var="list" value="${requestScope.userList}" />
+	<c:set var="nowPage" value="${requestScope.reqPage}" />
+	<c:set var="startPage" value="${requestScope.startPage}" />
+	<c:set var="endPage" value="${requestScope.endPage}" />
+	<c:set var="totalCnt" value="${requestScope.totalCnt}" />
+	<c:set var="totalPage" value="${requestScope.totalPage}" />
+
+
+	<div class="single-product-tab-area mg-b-30">
+            <!-- Single pro tab review Start-->
+            <div class="single-pro-review-area">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="review-tab-pro-inner">
+                                <ul id="myTab3" class="tab-review-design">
+                                    <li class="active"><a href="#description"><i class="icon nalika-edit" aria-hidden="true"></i>정보 수정</a></li>
+                                </ul>
+                                <div id="myTabContent" class="tab-content custom-product-edit">
+                                    <div class="product-tab-list tab-pane fade active in" id="description">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="review-content-section">
+                                                	<div class="input-group mg-b-pro-edt">
+                                                        <span class="input-group-addon">아이디</span>
+                                                        <input type="text" class="" readonly value="">
+                                                    </div>
+                                                    <div class="input-group mg-b-pro-edt">
+                                                        <span class="input-group-addon">이름</span>
+                                                        <input type="text" class="" readonly value="">
+                                                    </div>
+                                                    <div class="input-group mg-b-pro-edt">
+                                                        <span class="input-group-addon">이메일</span>
+                                                        <input type="text" class="" readonly value="">
+                                                    </div>
+                                                    <div class="input-group mg-b-pro-edt">
+                                                        <span class="input-group-addon">주소</span>
+                                                        <input type="text" class="" readonly value="">
+                                                    </div>
+                                                    <div class="input-group mg-b-pro-edt">
+                                                        <span class="input-group-addon">권한</span>
+                                                        <input type="text" class="" value="" readonly="readonly"> 
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="review-content-section">
+                                                    
+                                                    <div class="input-group mg-b-pro-edt">
+                                                        <span class="input-group-addon">이름</span>
+                                                        <input type="text" class="form-control" value="">
+                                                    </div>
+                                                    <div class="input-group mg-b-pro-edt">
+                                                        <span class="input-group-addon">이메일</span>
+                                                        <input type="text" class="form-control" value="">
+                                                    </div>
+                                                    <div class="input-group mg-b-pro-edt">
+                                                        <span class="input-group-addon">주소</span>
+                                                        <input type="text" class="form-control" value="">
+                                                    </div>
+                                                    <div class="input-group mg-b-pro-edt">
+                                                        <span class="input-group-addon">장르</span>
+                                                        <input type="text" class="form-control" value="">
+                                                    </div>
+                                                    
+                                                    <div class="input-group mg-b-pro-edt">
+                                                        <span class="input-group-addon">권한</span>
+                                                        <input type="text" class="form-control" value="" > 
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="text-center custom-pro-edt-ds">
+                                                    <button type="button" class="btn btn-ctl-bt waves-effect waves-light m-r-10">저장
+														</button>
+                                                    <button type="button" class="btn btn-ctl-bt waves-effect waves-light">취소
+														</button>
+														<!-- ajax -->
+													<button type="button" class="btn btn-ctl-bt waves-effect waves-light">비밀번호 초기화
+														</button>	
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <c:import url="./footer.jsp"></c:import>
+</body>
+
+</html>

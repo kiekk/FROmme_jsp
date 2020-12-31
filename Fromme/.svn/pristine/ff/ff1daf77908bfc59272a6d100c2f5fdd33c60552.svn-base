@@ -1,0 +1,199 @@
+function todayClassChart() {
+    var ctx = document.getElementById("todayClassChart");
+    var todayChart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: todayLabel,
+        datasets: [
+          {
+            label: "예약 수",
+            data: todayData,
+            fill: false,
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.2)",
+              "rgba(54, 162, 235, 0.2)",
+              "rgba(255, 206, 86, 0.2)",
+              "rgba(75, 192, 192, 0.2)",
+              "rgba(153, 102, 255, 0.2)",
+              "rgba(255, 159, 64, 0.2)",
+              "rgba(255, 159, 64, 0.2)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)",
+              "rgba(255, 159, 64, 1)",
+            ],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
+    });
+  }
+
+  function weekClassChart() {
+    var ctx = document.getElementById("weekClassChart");
+    var todayChart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: weekLabel,
+        datasets: [
+          {
+            label: "예약 수",
+            data: weekData,
+            fill: false,
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.2)",
+              "rgba(54, 162, 235, 0.2)",
+              "rgba(255, 206, 86, 0.2)",
+              "rgba(75, 192, 192, 0.2)",
+              "rgba(153, 102, 255, 0.2)",
+              "rgba(255, 159, 64, 0.2)",
+              "rgba(255, 159, 64, 0.2)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)",
+              "rgba(255, 159, 64, 1)",
+            ],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
+    });
+  }
+  
+  function monthClassChart() {
+	    var ctx = document.getElementById("monthClassChart");
+	    var todayChart = new Chart(ctx, {
+	      type: "line",
+	      data: {
+	        labels: monthLabel,
+	        datasets: [
+	          {
+	            label: "예약 수",
+	            data: monthData,
+	            fill: false,
+	            backgroundColor: [
+	              "rgba(255, 99, 132, 0.2)",
+	              "rgba(54, 162, 235, 0.2)",
+	              "rgba(255, 206, 86, 0.2)",
+	              "rgba(75, 192, 192, 0.2)",
+	              "rgba(153, 102, 255, 0.2)",
+	              "rgba(255, 159, 64, 0.2)",
+	              "rgba(255, 159, 64, 0.2)",
+	            ],
+	            borderColor: [
+	              "rgba(255, 99, 132, 1)",
+	              "rgba(54, 162, 235, 1)",
+	              "rgba(255, 206, 86, 1)",
+	              "rgba(75, 192, 192, 1)",
+	              "rgba(153, 102, 255, 1)",
+	              "rgba(255, 159, 64, 1)",
+	              "rgba(255, 159, 64, 1)",
+	            ],
+	            borderWidth: 1,
+	          },
+	        ],
+	      },
+	      options: {
+	        responsive: true,
+	        scales: {
+	          yAxes: [
+	            {
+	              ticks: {
+	                beginAtZero: true,
+	              },
+	            },
+	          ],
+	        },
+	      },
+	    });
+	  }
+  
+  function yearClassChart() {
+	    var ctx = document.getElementById("yearClassChart");
+	    var todayChart = new Chart(ctx, {
+	      type: "line",
+	      data: {
+	        labels: yearLabel,
+	        datasets: [
+	          {
+	            label: "예약 수",
+	            data: yearData,
+	            fill: false,
+	            backgroundColor: [
+	              "rgba(255, 99, 132, 0.2)",
+	              "rgba(54, 162, 235, 0.2)",
+	              "rgba(255, 206, 86, 0.2)",
+	              "rgba(75, 192, 192, 0.2)",
+	              "rgba(153, 102, 255, 0.2)",
+	              "rgba(255, 159, 64, 0.2)",
+	              "rgba(255, 159, 64, 0.2)",
+	            ],
+	            borderColor: [
+	              "rgba(255, 99, 132, 1)",
+	              "rgba(54, 162, 235, 1)",
+	              "rgba(255, 206, 86, 1)",
+	              "rgba(75, 192, 192, 1)",
+	              "rgba(153, 102, 255, 1)",
+	              "rgba(255, 159, 64, 1)",
+	              "rgba(255, 159, 64, 1)",
+	            ],
+	            borderWidth: 1,
+	          },
+	        ],
+	      },
+	      options: {
+	        responsive: true,
+	        scales: {
+	          yAxes: [
+	            {
+	              ticks: {
+	                beginAtZero: true,
+	              },
+	            },
+	          ],
+	        },
+	      },
+	    });
+	  }
+
+
+  window.onload = () => {
+      todayClassChart();
+      weekClassChart();
+      monthClassChart();
+      yearClassChart();
+  }

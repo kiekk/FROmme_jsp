@@ -1,0 +1,47 @@
+package com.fromme.app.studio;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.fromme.action.Action;
+import com.fromme.action.ActionForward;
+import com.fromme.app.classes.vo.ClassesVO;
+import com.fromme.app.studio.dao.StudioDAO;
+import com.fromme.app.studio.vo.StudioVO;
+
+public class StudioEditAction implements Action {
+
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		
+		ActionForward forward = new ActionForward();
+
+		System.out.println("studioEditAction 실행");
+		
+		StudioVO s_vo = new StudioVO();
+		StudioDAO s_dao = new StudioDAO();
+		
+		//테스트용 1번 데이터
+		String studio_name = s_dao.getStudioName(1);
+	
+		System.out.println("받아온 공방명"+studio_name);
+		// 스튜디오(이름, 주소)
+		s_vo.setStudio_name(studio_name);
+		
+		s_vo.setStudio_phone("01012341234");
+		
+		request.setAttribute("s_vo", s_vo);
+		
+		forward.setRedirect(false);
+		forward.setPath("/app/studio/studio_edit.jsp");
+	
+		return forward;
+	}
+}
+
+

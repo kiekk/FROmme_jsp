@@ -1,0 +1,37 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+		<!-- Top Navigation -->
+		<nav
+			class="background-transparent background-transparent-hightlight full-width sticky">
+			<div class="s-12 l-2 header-logo">
+				<a href="${pageContext.request.contextPath}/app/main/index.jsp" class="logo"> <!-- Logo White Version --> <img
+					class="logo-white"
+					src="${pageContext.request.contextPath}/app/assets/img/logo.png" alt="">
+					<!-- Logo Dark Version --> <img class="logo-dark"
+					src="${pageContext.request.contextPath}/app/assets/img/logo-dark.png" alt="">
+				</a>
+			</div>
+			<div class="top-nav s-12 l-10">
+
+				<ul class="right chevron ">
+					<li><a href="${pageContext.request.contextPath}/app/main/index.jsp">Home</a></li>
+					<li><a href="${pageContext.request.contextPath}/classes/ClassesList.cls">Class</a></li>
+					<li>
+						<a href="${pageContext.request.contextPath}/board/BoardList.bo?cat=1">Board</a>
+						<ul>
+							<li><a href="${pageContext.request.contextPath}/board/BoardList.bo?cat=1">공지사항</a></li>
+							<li><a href="${pageContext.request.contextPath}/board/BoardList.bo?cat=2">문의사항</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="${pageContext.request.contextPath}/board/BoardList.bo?cat=3">Community</a>
+						<ul>
+							<li><a href="${pageContext.request.contextPath}/board/BoardList.bo?cat=3">내작품자랑</a></li>
+							<li><a href="${pageContext.request.contextPath}/board/BoardList.bo?cat=4">중고거래</a></li>
+						</ul>
+					</li>
+					<li><a href="../user/map.html">Map</a></li>
+					<li><a href="../user/login.html"><b>Login</b></a></li>
+				</ul>
+			</div>
+		</nav>
